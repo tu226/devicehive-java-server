@@ -88,7 +88,9 @@ if (publishable_branches.contains(env.BRANCH_NAME)) {
           sh 'mocha -R mochawesome integration-tests'
         }
       } finally {
-        archiveArtifacts artifacts: 'devicehive-tests/mochawesome-report/mochawesome.json, devicehive-tests/mochawesome-report/mochawesome.html', fingerprint: true, onlyIfSuccessful: true
+        zip archive: true, dir: '', glob: 'devicehive-tests/**', zipFile: 'mochawesome-report.zip'
+        sh 'ls -la'
+        //archiveArtifacts artifacts: 'mochawesome-report.zip', fingerprint: true, onlyIfSuccessful: true
         dir('devicehive-docker/rdbms-image') {
           sh '''
             sudo docker-compose kill
