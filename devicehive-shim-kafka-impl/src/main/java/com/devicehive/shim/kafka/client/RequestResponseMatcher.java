@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 
@@ -36,7 +38,7 @@ public class RequestResponseMatcher {
     private final Map<Long, Set<String>> subscriptionMap = new HashMap<>();
 
     //TODO [rafa] we do not really need FJP, but rather some other pool implementation. Though FJP looks good, it might be over kill for our use case.
-    private final ForkJoinPool executionPool = new ForkJoinPool();
+    private final ExecutorService executionPool = Executors.newFixedThreadPool(3);
 
     void addRequestCallback(String correlationId, Consumer<Response> callback) {
         correlationMap.put(correlationId, callback);
